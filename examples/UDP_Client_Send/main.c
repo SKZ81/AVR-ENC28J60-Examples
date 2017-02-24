@@ -10,6 +10,8 @@
 #include "timeout.h"
 #include "net.h"
 
+#include "avr_uart.h"
+
 #define REMOTE_PORT 9600
 #define LOCAL_PORT  2000
 #define BUFFER_SIZE 650
@@ -28,21 +30,32 @@ static uint8_t data[18] = {0x01,0x02,0x03,0x04,0x05};
 static void net_init (void);
 
 int main (void) {
+    avr_uart_init();
+    stdout = &avr_uart_output;
+    stdin  = &avr_uart_input_echo;
+
     net_init();
+    printf("UDP send in loop each 1s\n");
     for(;;) {
         send_udp(buf,data,sizeof(data),local_port, remote_host, remote_port);
+        printf("Send !\n");
         _delay_ms(1000);
     }
     return (0);
 }
 
 static void net_init (void) {
-    delay_loop_1(0);
+    _delay_loop_1(0);
+    printf("enc28j60Init(mac_address);");
     enc28j60Init(mac_address);
+    printf("enc28j60clkout(2);");
     enc28j60clkout(2);
     _delay_loop_1(0);
+    printf("enc28j60PhyWrite(PHLCON,0x476);");
     enc28j60PhyWrite(PHLCON,0x476);
     _delay_loop_1(0);
-    nit_ip_arp_udp_tcp(mac_address,local_host,local_port);
+    printf("init_ip_arp_udp_tcp(mac_address,local_host,local_port);");
+    init_ip_arp_udp_tcp(mac_address,local_host,local_port);
+    printf("client_set_gwip(gateway);");
     client_set_gwip(gateway);
 }
