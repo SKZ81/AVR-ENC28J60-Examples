@@ -1,3 +1,11 @@
+**SKZ81_NOTICE** : 
+this README is unchanged from forked repo yet.
+Stuff about the Makefile are false nowadays.
+I pushed the Arduino.mk version.
+If you're interested and lurking for more information, please visit : https://skz81.wordpress.com/ and look for openPowerSwitch.
+**SKZ81_NOTICE_END**.
+
+
 AVR TCP/IP Examples
 ===================
 
